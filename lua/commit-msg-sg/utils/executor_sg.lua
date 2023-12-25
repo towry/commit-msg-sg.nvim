@@ -1,4 +1,4 @@
-local utils = require('lua.commit-msg-sg.utils')
+local utils = require('commit-msg-sg.utils')
 
 local M = {}
 
@@ -23,6 +23,7 @@ end
 
 function M.setup(bufnr, config)
   utils.throws_if_deps_is_missing()
+  if clients[bufnr] then return end
 
   require('sg.cody.rpc').start({
     force = false,

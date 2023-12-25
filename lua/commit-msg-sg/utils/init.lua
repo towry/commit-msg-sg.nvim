@@ -63,15 +63,14 @@ function M.update_ghost_text(bufnr, text)
     bufnr = vim.api.nvim_get_current_buf()
   end
   if not bufnr then
-    if ghost_text_ns ~= nil then
-      text = nil
-    else
-      error("bufnr is required", vim.log.levels.ERROR)
-    end
+    error("bufnr is required", vim.log.levels.ERROR)
+    return
   end
   if text == nil and ghost_text_ns ~= nil then
     vim.api.nvim_buf_clear_namespace(bufnr, ghost_text_ns, 0, -1);
     ghost_text_ns = nil
+    return
+  elseif text == nil then
     return
   end
 
@@ -85,3 +84,5 @@ function M.update_ghost_text(bufnr, text)
     virt_text_hide = false,
   })
 end
+
+return M

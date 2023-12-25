@@ -5,13 +5,13 @@ local utils = require('commit-msg-sg.utils')
 local writters = {}
 
 local prompt_str = [[
-You are a git expert and experienced programmer that are here to help me write a git commit message in a git repo.\n
-1. Generate concise and accurate git commit message based on the git diff that provided later with focus on the changed lines that start with "+","-".\n
-2. Do not add additional information about the response, like how the generated content is better and follow the rules/standards.\n
-4. The generated git commit message follow the Conventional commits standard.\n
-6. Avoid duplicating the diff content.\n
-The diff output:\n
-```diff\n%s```
+You are a git expert and experienced programmer that are here to help me write a git commit message in a git repo.
+1. Generate concise and accurate git commit message based on the git diff that provided later with focus on the changed lines that start with "+","-".
+2. Do not add additional information about the response, like how the generated content is better and follow the rules/standards.
+4. The generated git commit message follow the Conventional commits standard.
+6. Avoid duplicating the diff content.
+The diff output:
+```diff%s```
 ]]
 
 local function on_attach(client, bufnr, opts)
@@ -26,13 +26,13 @@ function M.setup(opts)
   opts = opts or {}
   local on_attach_ = opts.on_attach
   opts.on_attach = function(client, bufnr)
-    on_attach(client, bufnr, opts)
+    on_attach(client, bufnr, config.options)
     if on_attach_ then
       on_attach_(client, bufnr)
     end
   end
   config.setup(opts)
-  if config.options.default_prompt and config.options.default_prompt ~= '' then
+  if config.options.default_prompt and config.options.default_prompt and config.options.default_prompt ~= '' then
     prompt_str = config.options.default_prompt
   end
   if config.options.auto_setup_gitcommit then
@@ -81,32 +81,36 @@ end
 
 function M.write()
   local bufnr = vim.api.nvim_get_current_buf()
+  local Writter = require('commit-msg-sg.simple_writter')
   local writter = writters[bufnr]
-  if not writter or writter:invalid() then
-    local Writter = require('commit-msg-sg.simple_writter')
-    writters[bufnr] = Writter.init(bufnr)
-    writter = writters[bufnr]
+  if writter then
+    writter:reset()
+  end
+  writter = Writter.init(bufnr)
+  writters[bufnr] = writter
+
+  --- NOTE: maybe move to hook.
+  if config.options.ghost_text then
+    utils.update_ghost_text(bufnr, nil)
+    utils.update_ghost_text(bufnr, config.options.ghost_text)
   end
 
   local executor = require('commit-msg-sg.executor')
   gen_snippet(config.options, function(err, snippet)
+    print(snippet)
     if err then
       vim.notify(err, vim.log.levels.ERROR)
       return
     end
     writter:reset()
-    --- NOTE: maybe move to hook.
-    if config.options.ghost_text then
-      utils.update_ghost_text(config.options.ghost_text)
-    end
     executor.execute(bufnr, snippet, function(err_, text)
       if writter:invalid() then return end
       if err_ then
         vim.notify(err_, vim.log.levels.ERROR)
         return
       end
-      if text and config.options.ghost_text then
-        utils.update_ghost_text(nil)
+      if text and text ~= "" and config.options.ghost_text then
+        utils.update_ghost_text(bufnr, nil)
       end
       writter:update(text)
     end)

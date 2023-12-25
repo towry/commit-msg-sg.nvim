@@ -36,6 +36,8 @@ end
 function SimpleWritter:update(text)
   if self:invalid() then return end
 
+  self.text = text or ''
+
   local lines = vim.split(text, '\n')
   -- iterate the lines, if vim.trim(line) is ```, ignore it
   local new_lines = {}
@@ -60,3 +62,5 @@ function SimpleWritter:reset()
   end
   vim.api.nvim_buf_set_lines(self.bufnr, marker:start_pos().row, end_row, false, {})
 end
+
+return SimpleWritter
