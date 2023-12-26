@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/towry/commit-msg-sg.nvim/compare/v1.0.0...v1.0.1) (2023-12-26)
+
+
+### Bug Fixes
+
+* update README with usage examples link ([1760d24](https://github.com/towry/commit-msg-sg.nvim/commit/1760d24abfb003f9d8be93df84d1135ecec295e7))
+
 ## 1.0.0 (2023-12-26)
 
 
