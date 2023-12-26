@@ -25,6 +25,20 @@ local T = MiniTest.new_set({
 -- Tests related to the `setup` method.
 T["setup()"] = MiniTest.new_set()
 
+T["setup()"]["sets exposed methods and default options value"] = function()
+  child.lua([[require('commit-msg-sg').setup()]])
+
+  -- global object that holds your plugin information
+  eq_type_global(child, "_G.CommitMsgSg", "table")
+
+  -- config
+  eq_type_global(child, "_G.CommitMsgSg.config", "table")
+
+  -- assert the value, and the type
+  eq_config(child, "debug", false)
+  eq_type_config(child, "debug", "boolean")
+end
+
 T["setup()"]["overrides default values"] = function()
   child.lua([[require('commit-msg-sg').setup({
         -- write all the options with a value different than the default ones

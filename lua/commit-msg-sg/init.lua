@@ -31,7 +31,7 @@ function M.setup(opts)
       on_attach_(client, bufnr)
     end
   end
-  config.setup(opts)
+  M.config = config.setup(opts)
   if
     config.options.default_prompt
     and config.options.default_prompt
@@ -122,5 +122,7 @@ function M.write()
     end)
   end)
 end
+
+_G.CommitMsgSg = M
 
 return M
