@@ -1,2 +1,5 @@
 CommitMsgSg.options	commit-msg-sg.txt	/*CommitMsgSg.options*
 CommitMsgSg.setup()	commit-msg-sg.txt	/*CommitMsgSg.setup()*
+M.execute()	commit-msg-sg.txt	/*M.execute()*
+M.fetch_git_diff_as_text()	commit-msg-sg.txt	/*M.fetch_git_diff_as_text()*
+M.update_ghost_text()	commit-msg-sg.txt	/*M.update_ghost_text()*

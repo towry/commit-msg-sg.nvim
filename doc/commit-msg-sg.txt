@@ -7,8 +7,20 @@ Your plugin configuration with its default values.
 Default values:
 >
   CommitMsgSg.options = {
-      -- Prints useful logs about what event are triggered, and reasons actions are executed.
-      debug = false,
+    ---@type string|function
+    cwd = nil,
+    auto_setup_gitcommit = true,
+    auto_setup_command = true,
+    on_attach = nil,
+    ghost_text = "Thinking...",
+    -- customized function to generate prompt string.
+    prompt_gen = nil,
+    default_prompt = nil,
+    -- @private
+    executor = "sg",
+    -- Debug
+    -- @private
+    debug = false,
   }
 
 <
@@ -23,6 +35,30 @@ Parameters ~
 
 Usage ~
 `require("commit-msg-sg").setup()` (add `{}` with your |CommitMsgSg.options| table)
+
+
+==============================================================================
+------------------------------------------------------------------------------
+                                                    *M.fetch_git_diff_as_text()*
+                       `M.fetch_git_diff_as_text`({opts})
+Parameters ~
+{opts} {callback?: `(function,cmd?:table,cwd?:string})`
+parameters: {error?: string, output?:string}
+
+------------------------------------------------------------------------------
+                                                         *M.update_ghost_text()*
+                     `M.update_ghost_text`({bufnr}, {text})
+Update first line ghost text.
+Parameters ~
+{text} `(optional)` `(string)`
+
+
+==============================================================================
+------------------------------------------------------------------------------
+                                                                   *M.execute()*
+                  `M.execute`({bufnr}, {snippet}, {callback})
+@param snippet string
+@param callback function
 
 
  vim:tw=78:ts=8:noet:ft=help:norl:
