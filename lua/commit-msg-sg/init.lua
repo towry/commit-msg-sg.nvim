@@ -1,6 +1,6 @@
 local M = {}
-local config = require('commit-msg-sg.config')
-local utils = require('commit-msg-sg.utils')
+local config = require("commit-msg-sg.config")
+local utils = require("commit-msg-sg.utils")
 
 local writters = {}
 
@@ -16,8 +16,8 @@ The diff output:
 
 local function on_attach(client, bufnr, opts)
   if opts.auto_setup_command then
-    vim.api.nvim_buf_create_user_command(bufnr, 'WriteGitCommitMessage', M.write, {
-      desc = 'Write git commit with AI',
+    vim.api.nvim_buf_create_user_command(bufnr, "WriteGitCommitMessage", M.write, {
+      desc = "Write git commit with AI",
     })
   end
 end
@@ -32,7 +32,11 @@ function M.setup(opts)
     end
   end
   config.setup(opts)
-  if config.options.default_prompt and config.options.default_prompt and config.options.default_prompt ~= '' then
+  if
+    config.options.default_prompt
+    and config.options.default_prompt
+    and config.options.default_prompt ~= ""
+  then
     prompt_str = config.options.default_prompt
   end
   if config.options.auto_setup_gitcommit then
@@ -42,21 +46,21 @@ end
 
 function M.setup_gitcommit(opts)
   local setup_ = function(bufnr)
-    require('commit-msg-sg.executor').setup(bufnr, opts)
+    require("commit-msg-sg.executor").setup(bufnr, opts)
   end
 
-  vim.api.nvim_create_augroup('commit-msg-sg', {
+  vim.api.nvim_create_augroup("commit-msg-sg", {
     clear = true,
   })
-  vim.api.nvim_create_autocmd('FileType', {
-    pattern = 'gitcommit',
-    group = 'commit-msg-sg',
+  vim.api.nvim_create_autocmd("FileType", {
+    pattern = "gitcommit",
+    group = "commit-msg-sg",
     callback = function()
       setup_(vim.api.nvim_get_current_buf())
     end,
   })
 
-  if vim.bo.filetype == 'gitcommit' then
+  if vim.bo.filetype == "gitcommit" then
     setup_(vim.api.nvim_get_current_buf())
   end
 end
@@ -66,7 +70,7 @@ local function gen_snippet(opts, callback)
     return opts.prompt_gen(callback)
   end
 
-  local cwd = type(opts.cwd) == 'function' and opts.cwd() or opts.cwd
+  local cwd = type(opts.cwd) == "function" and opts.cwd() or opts.cwd
   utils.fetch_git_diff_as_text({
     cwd = cwd,
     callback = function(err, text)
@@ -81,7 +85,7 @@ end
 
 function M.write()
   local bufnr = vim.api.nvim_get_current_buf()
-  local Writter = require('commit-msg-sg.simple_writter')
+  local Writter = require("commit-msg-sg.simple_writter")
   local writter = writters[bufnr]
   if writter then
     writter:reset()
@@ -95,7 +99,7 @@ function M.write()
     utils.update_ghost_text(bufnr, config.options.ghost_text)
   end
 
-  local executor = require('commit-msg-sg.executor')
+  local executor = require("commit-msg-sg.executor")
   gen_snippet(config.options, function(err, snippet)
     print(snippet)
     if err then
@@ -104,7 +108,9 @@ function M.write()
     end
     writter:reset()
     executor.execute(bufnr, snippet, function(err_, text)
-      if writter:invalid() then return end
+      if writter:invalid() then
+        return
+      end
       if err_ then
         vim.notify(err_, vim.log.levels.ERROR)
         return

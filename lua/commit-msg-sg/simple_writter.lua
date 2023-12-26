@@ -1,4 +1,4 @@
-local utils = require('commit-msg-sg.utils')
+local utils = require("commit-msg-sg.utils")
 
 local id = 1
 
@@ -15,7 +15,7 @@ SimpleWritter.init = function(bufnr)
     error("bufnr is required", vim.log.levels.ERROR)
   end
 
-  local Mark = require('sg.mark')
+  local Mark = require("sg.mark")
   local mark = Mark.init({
     ns = bufnr,
     bufnr = bufnr,
@@ -27,26 +27,34 @@ SimpleWritter.init = function(bufnr)
   id = id + 1
   return setmetatable({
     bufnr = bufnr,
-    text = '',
+    text = "",
     id = id,
     marker = mark,
   }, { __index = SimpleWritter })
 end
 
 function SimpleWritter:update(text)
-  if self:invalid() then return end
+  if self:invalid() then
+    return
+  end
 
-  self.text = text or ''
+  self.text = text or ""
 
-  local lines = vim.split(text, '\n')
+  local lines = vim.split(text, "\n")
   -- iterate the lines, if vim.trim(line) is ```, ignore it
   local new_lines = {}
   for _, line in ipairs(lines) do
-    if vim.trim(line) ~= '```' then
+    if vim.trim(line) ~= "```" then
       table.insert(new_lines, line)
     end
   end
-  vim.api.nvim_buf_set_lines(self.bufnr, self.marker:start_pos().row, self.marker:end_pos().row, false, new_lines)
+  vim.api.nvim_buf_set_lines(
+    self.bufnr,
+    self.marker:start_pos().row,
+    self.marker:end_pos().row,
+    false,
+    new_lines
+  )
 end
 
 function SimpleWritter:invalid()
@@ -54,7 +62,9 @@ function SimpleWritter:invalid()
 end
 
 function SimpleWritter:reset()
-  if vim.fn.getline(1) == '' then return end
+  if vim.fn.getline(1) == "" then
+    return
+  end
   local marker = self.marker
   local end_row = marker:end_pos().row - 1
   if end_row <= 0 then

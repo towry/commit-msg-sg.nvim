@@ -10,12 +10,12 @@ CommitMsgSg.options = {
   auto_setup_gitcommit = true,
   auto_setup_command = true,
   on_attach = nil,
-  ghost_text = 'Thinking...',
+  ghost_text = "Thinking...",
   -- customized function to generate prompt string.
   prompt_gen = nil,
   default_prompt = nil,
   -- @private
-  executor = 'sg',
+  executor = "sg",
   -- Debug
   -- @private
   debug = false,

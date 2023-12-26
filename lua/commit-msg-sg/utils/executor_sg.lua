@@ -1,4 +1,4 @@
-local utils = require('commit-msg-sg.utils')
+local utils = require("commit-msg-sg.utils")
 
 local M = {}
 
@@ -7,7 +7,7 @@ local clients = {}
 --- @param snippet string
 --- @param callback function
 function M.execute(bufnr, snippet, callback)
-  local rpc = require('sg.cody.rpc')
+  local rpc = require("sg.cody.rpc")
   local client = clients[bufnr]
   if not client then
     error("setup not called", vim.log.levels.ERROR)
@@ -16,20 +16,22 @@ function M.execute(bufnr, snippet, callback)
     if not res then
       return
     end
-    local text = res.text .. '\n'
+    local text = res.text .. "\n"
     callback(nil, text)
   end)
 end
 
 function M.setup(bufnr, config)
   utils.throws_if_deps_is_missing()
-  if clients[bufnr] then return end
+  if clients[bufnr] then
+    return
+  end
 
-  require('sg.cody.rpc').start({
+  require("sg.cody.rpc").start({
     force = false,
   }, function(client_or_nil)
     if client_or_nil == nil then
-      vim.notify('cody client not started successfully');
+      vim.notify("cody client not started successfully")
       return
     end
 
