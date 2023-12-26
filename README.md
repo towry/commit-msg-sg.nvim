@@ -7,7 +7,7 @@ Write git commit message with AI ([sg.nvim](https://github.com/sourcegraph/sg.nv
 <div align="center">
 
 https://github.com/towry/commit-msg-sg.nvim/assets/8279858/e1ac4a3b-7d6f-45ea-bee4-25674f5af424
-    
+
 </div>
 
 ## 📋 Installation
@@ -30,6 +30,9 @@ Snippet
 
 </td>
 <td>
+
+[Checkout usage
+examples ->](https://github.com/search?q=commit-msg-sg+CommitMsgSg+language%3ALua+-repo%3Atowry%2Fcommit-msg-sg.nvim&type=code)
 
 ```lua
 {
