@@ -101,7 +101,6 @@ function M.write()
 
   local executor = require("commit-msg-sg.executor")
   gen_snippet(config.options, function(err, snippet)
-    print(snippet)
     if err then
       vim.notify(err, vim.log.levels.ERROR)
       return
