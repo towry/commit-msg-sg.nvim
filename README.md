@@ -5,7 +5,9 @@
 Write git commit message with AI ([sg.nvim](https://github.com/sourcegraph/sg.nvim), [Cody](https://sourcegraph.com/cody)).
 
 <div align="center">
-    > Drag your video (<10MB) here to host it for free on GitHub.
+
+https://github.com/towry/commit-msg-sg.nvim/assets/8279858/e1ac4a3b-7d6f-45ea-bee4-25674f5af424
+    
 </div>
 
 ## 📋 Installation
